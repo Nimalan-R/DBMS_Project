@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  .quiz-header {
+    background: linear-gradient(135deg, #01224d, #00458a); /* dark blue gradient */
+    color: white;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+  }
+</style>
+
+<div class="container mt-4">
+  <div class="quiz-header text-center">
+    <h1 class="m-0">Available Quizzes</h1>
+  </div>
+  <!-- Subject Filter -->
+  <form method="get" class="row g-3 mb-4">
+    <div class="col-auto">
+      <select name="subject" class="form-select" onchange="this.form.submit()">
+        <option value="">All Subjects</option>
+        {% for subject in subjects %}
+          <option value="{{ subject.id }}" {% if subject.id|stringformat:"s" == selected_subject %}selected{% endif %}>
+            {{ subject.name }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+  </form>
+
+  <!-- Quiz Cards -->
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for quiz in quizzes %}
+      <div class="col">
+        <div class="card p-4 shadow" style="width: 100%; max-width: 400px;">
+          <div class="card-body">
+            <h5 class="card-title">{{ quiz.title }}</h5>
+            <p class="card-text">Subject: {{ quiz.subject.name }}</p>
+            <p class="card-text text-muted">Total Questions: {{ quiz.total_questions }}</p>
+            <a href="{% url 'take_quiz' quiz.id %}" class="btn btn-primary">Start Quiz</a>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p>No quizzes available for the selected subject.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

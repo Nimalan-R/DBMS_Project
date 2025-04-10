@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Quiz Result: {{ result.quiz.title }}</h2>
+<p><strong>Score:</strong> {{ result.score }}</p>
+<p><strong>Time:</strong> {{ result.timestamp }}</p>
+<hr>
+<h4>Answer Details</h4>
+{% for detail in result.details.all %}
+    <div class="mb-3">
+        <p><strong>{{ detail.question.text }}</strong></p>
+        <p>Your Answer: {% if detail.selected_answer %}
+            {{ detail.selected_answer.text }}
+        {% else %}
+            No Answer
+        {% endif %} (Correct: {{ detail.is_correct }})</p>
+    </div>
+{% endfor %}
+<a href="{% url 'quiz_list' %}" class="btn btn-primary">Back to Quizzes</a>
+{% endblock %}
