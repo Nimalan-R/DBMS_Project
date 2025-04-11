@@ -5,6 +5,10 @@ from django.utils.timezone import now
 
 
 class User(AbstractUser):
+    username = models.CharField(
+    max_length=150,
+    unique=True
+)
     age = models.PositiveIntegerField(null=True, blank=True)
     is_student = models.BooleanField(default=True)
     
